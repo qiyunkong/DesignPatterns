@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>滑动门</title>
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/demo.css">
+    <script src="js/tool.domElement.js"></script>
+</head>
+<body>
+    <!--第1个盒子-->
+    <div id="solidBox" class="solidBox">
+        <h3 class="solidBox_title clearfix">
+            <strong class="hover">足球</strong>
+            <strong>篮球</strong>
+            <strong>其他</strong>
+        </h3>
+        <div class="solidBox_content">
+            <div style="display: block;">
+                足球对应的内容
+            </div>
+            <div style="display: none;">
+                篮球对应的内容
+            </div>
+            <div style="display: none;">
+                其他对应的内容
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //第一步 先分析需要  滑动门是对象    solidBox是滑动门的抽象 它是一个类（概括一类事物的特征）
+        ///           属性：一些元素对象 方法：1.事件绑定 2.显示不同类别的内容
+        //第二步 搭建出模型
+        //第三不 实现具体功能
+        window.onload = function () {
+            var s = new solidBox("solidBox");
+            s.init();
+        };
+
+        function solidBox(boxId) {
+            //公有的属性
+            this.boxObj = document.getElementById(boxId);
+            ////去掉Element对象内的所有空白节点
+            cleanWhitespace(this.boxObj);
+
+            //私有的属性
+            var headObj = this.boxObj.childNodes[0];    //获取标题区域
+            var contentObj = this.boxObj.childNodes[1]; //获取内容区域
+            //公有的方法
+            this.init = function(){
+                headEvent();
+            }
+
+            // 私有方法 事件绑定
+            function headEvent() {
+                for (var j = 0; j < headObj.childNodes.length; j++) {
+                    // console.log(1);
+                    //第二步 绑定事件  A      闭包
+                    (function (k) {
+                        headObj.childNodes[k].onclick = function () {
+                            showContent(k);
+                        };
+                    })(j);
+                }
+            }
+            // 私有方法 显示不同类别的内容
+            function showContent(n) {
+                for (var i = 0; i < headObj.childNodes.length; i++) {
+                    headObj.childNodes[i].className = "";
+                    contentObj.childNodes[i].style.display = "none";
+                }
+                headObj.childNodes[n].className = "hover";
+                contentObj.childNodes[n].style.display = "block";
+            }
+        }
+    </script>
+
+    <script>
+        var a = 0;
+        var object = {
+            name:'云空',
+            age:18
+        }
+        function f(sum) {
+            sum++;
+        }
+        function f1(obj) {
+            obj.name = '齐云飞'
+        }
+        f1(object);
+        f(a);
+        console.log(a,object)
+
+
+    </script>
+</body>
+</html>

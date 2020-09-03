@@ -1,0 +1,35 @@
+/* CSS Document */
+.solidBox {
+    width:330px;
+    height:200px;
+    margin:20px;
+    border-left:#CCC 1px solid;
+    overflow:hidden;
+}
+.solidBox .solidBox_title {
+    height:30px;
+    line-height:30px;
+}
+.solidBox .solidBox_title strong {
+    float:left;
+    width:109px;
+    height:30px;
+    border:#CCC 1px solid;
+    border-left:none;
+    text-align:center;
+    font-size:16px;
+    font-family:'微软雅黑';
+    cursor:pointer;
+}
+.solidBox .solidBox_title .hover {
+    background:#999;
+    color:#FFF;
+}
+.solidBox .solidBox_content {
+    padding:5px;
+    border:#CCC 1px solid;
+    border-left:none;
+    border-top:none;
+    height:157px;
+    overflow:hidden;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象</title>
+</head>
+<body>
+    <script>
+        //E5 语法
+        function People(name,age){
+            this.name = name;
+            this.age = age;
+        }
+        //E5 静态属性
+        People.number = 0;
+        People.prototype.say = function () {
+            console.log(this.name + "我会说话");
+        }
+        var we = new People("云空",10);
+        we.say();
+        console.log(People.number);
+
+        //E6 语法
+        class Animal {
+            //E6 静态属性
+            static number;
+            constructor(name,age) {
+                this.name = name;
+                this.age = age;
+            }
+            say(){
+                console.log(this.name + '我会说话');
+            }
+        }
+        let ig = new Animal("猫",12);
+        ig.say();
+    </script>
+</body>
+</html>
+
+<!--
+    面向对象
+        三要素：
+            继承
+            多态
+            封装
+
+-->
