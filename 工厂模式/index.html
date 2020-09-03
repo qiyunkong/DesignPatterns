@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工厂模式实现弹出框</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .layer {
+            width: 300px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 3px 5px #bbb;
+            /* 在容器中水平垂直居中显示 */
+            position: absolute;    /* 弹窗是浮出层，位置是绝对定位的，不会影响原文档流 */
+            left: 50%;
+            top: 50%;      /* 相对于容器的宽度 */
+            transform: translate(-50%, -50%);  /* 相对于元素自身宽度 */
+        }
+        .layer h2 {
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+        .layer p {
+            text-indent: 2em;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .layer button {
+            display: block;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            border: 0;
+            border-radius: 5px;
+            color: #fff;
+            background: #333;
+            margin: 10px auto 0;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<script>
+
+    class Promptbox{
+        constructor(text, template){
+            this.text = text;
+            this.template = template;
+            this.dom = null;
+            this.init();
+        }
+        init(){
+            // 初始化弹窗的DOM结构
+            this.initDom();
+            // 初始化弹窗的事件
+            this.initEvent();
+        }
+        initDom(){
+            var node = document.createElement('div');
+            // 根据配置生成弹窗内容
+            node.innerHTML = this.template.replace('{text}', this.text);
+            // 完成弹窗DOM结构初始化：childNodes[0]表示原来的html字符串中创建为DOM节点
+            this.dom = node.childNodes[0];   // div节点以及其中的内容保存下来，显示函数用于添加到页面中
+            //console.log(this.dom);
+        }
+        initEvent(){
+            this.dom.addEventListener('click', function (evt) {   // 在整个弹窗上注册事件，通过evt.target来获取触发事件的对象
+                // 如果点击了按钮
+                if(evt.target.tagName == 'BUTTON') {
+                    this.hide();   //隐藏整个面板
+                }
+            }.bind(this), false);     // bind()强制绑定弹窗组件来调用回调函数
+            //创建了一个新函数 把对象传进入 x
+        }
+        show(){
+            document.body.appendChild(this.dom);   // 将创建的节点添加到页面的hook中
+        }
+        hide(){
+            document.body.removeChild(this.dom);
+        }
+    }
+
+    class Creator{
+        creator(name, template){
+            return new Promptbox(name, template);
+        }
+    }
+    // 弹窗组件的HTML结构：模板字符串，定制需求
+    let template = `<div class='layer'>
+                        <h2>提示</h2>
+                        <p>{text}</p>
+                        <button>知道了</button>
+                    </div>`;
+
+    let factory = new Creator();
+    let boxUI = factory.creator('提示！！', template);
+    boxUI.show();
+
+
+
+
+</script>
+</body>
+</html>
