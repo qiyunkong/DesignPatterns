@@ -53,6 +53,6 @@ class Instance{
 
 let obj1 = Instance.getInstance();
 let obj2 = Instance.getInstance();
-
+//判断是否相同
 console.log(obj1 === obj2);
 console.log(obj2.name);
