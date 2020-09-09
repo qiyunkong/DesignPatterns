@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单例模式</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .layer{
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border:1px solid #ccc;
+            box-shadow: 0 3px 5px #bbb;
+            /*在容器中水平垂直居中显示*/
+            position: absolute; /* 弹窗是浮出层，位置是绝对定位的，不会影响原文档流 */
+            left: 50%;
+            top: 50%; /*先对容器的宽度*/
+            transform: translate(-50%,-50%);/*先对于元素自身宽度*/
+        }
+        .layer h2 {
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+        .layer p {
+            text-indent: 2em;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .layer button {
+            display: block;
+            width: 100px;
+            height: 30px;
+            line-height: 30px;
+            border: 0;
+            border-radius: 5px;
+            color: #fff;
+            background: #333;
+            margin: 10px auto 0;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <a id="bt">点我</a>
+</body>
+<script>
+    //构建一个Layer 类
+    class Layer{
+        constructor(text,template) {
+            this.text = text;
+            this.template = template;
+            this.dom = null;
+            this.init();
+        }
+        //静态方法 单例模式
+        static getInstance(text,template){
+            if(!this.instance){
+                this.instance = new Layer(text,template)
+            }
+            return this.instance;
+        }
+
+        //初始化
+        init(){
+            this.initDom();
+            this.initEvent();
+        }
+        //初始Dom对象 替换文本
+        initDom(){
+            //将字符串转Dom 对象
+            let node  = document.createElement("div");
+            node.innerHTML = this.template.replace("{text}",this.text);
+            this.dom = node;
+        }
+        //实现事件监听
+        initEvent(){
+            this.dom.addEventListener("click",(ev)=>{
+                if(ev.target.tagName === "BUTTON"){
+                    this.hide();
+                }
+            })
+        }
+        //显示
+        show(){
+            document.body.appendChild(this.dom); // this 不一样
+        }
+        //隐藏
+        hide(){
+            document.body.removeChild(this.dom);
+        }
+    }
+    //模板
+    var template = `
+    <div class='layer'>
+          <h2>提示</h2>
+          <p>{text}</p>
+          <button>知道了</button>
+    </div>`
+    document.getElementById("bt").onclick = function () {
+        //const layer = Layer.getInstance("WE", template);
+        const layer1 = Layer.getInstance("WE555", template);
+
+        //console.log(layer === layer1);
+
+        //layer.show();
+        layer1.show();
+        const layer2 = Layer.getInstance("WE5666", template);
+        layer2.show();
+    };
+</script>
+</html>
