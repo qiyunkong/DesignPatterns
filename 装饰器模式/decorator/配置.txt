@@ -1,0 +1,55 @@
+1.确保本机中安装node和npm环境
+    
+2.在本地任何文件夹下创建decorator文件夹
+
+3.安装babel
+    npm install --save-dev babel-cli babel-preset-env
+    在本地安装上述两个库，在工程根目录上创建babel的配置文件.babelrc，并写入：
+    {
+        "presets": ["env"]
+    }
+
+4.安装decorators插件
+    如果不安装插件，会有语法错误提示。按照说明，继续安装插件。
+    npm install babel-plugin-transform-decorators-legacy --save-dev
+    之后再配置文件添加插件，现在.babelrc文件应如下所示：
+    {
+      "presets": ["env"],
+      "plugins": ["transform-decorators-legacy"]
+    }
+
+这样准备工作就已经完成了。用vscode打开工程项目，创建一个main.js文件，打开终端，可以在终端中按照如下方式
+使用babel命令(安装babel-cli时，会安装babel和babel-node命令):windows中
+.\node_modules\.bin\babel-node main.js // 直接运行js代码
+.\node_modules\.bin\babel main.js > test.js // 将main.js转换成
+
+关于babel中为什么要配置成babel-preset-env方式，是为了以兼容的形式把babel-preset-env嵌入到babel里面，
+babel preset将基于你的实际浏览器及运行环境，自动的确定babel插件及polyfills，转译ES2015及此版本以上的语言。这里不再具体叙述babel的配置，
+详情请参考[babel配置](https://segmentfault.com/a/1190000011639765)。
+
+
+
+解决：对修饰器的实验支持是一项将在将来版本中更改的功能。设置+"experimentalDecorators"+选项以删除此警告。
+
+这样可以保证编译的时候不报错了，但是你会发现被装饰器装饰的方法或者类下面会有小红线，这样可以在根目录下面新建jsconfig.json
+
+{
+"compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es2017"
+},
+"exclude": [
+    "node_modules",
+    "dist"
+],
+"include": [
+    "src",
+    "env",
+    "static"
+]
+}
+
+
+装饰器文章
+https://wangxiaoting.blog.csdn.net/article/details/107587922
+

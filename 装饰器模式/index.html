@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>装饰器问题</title>
+</head>
+<body>
+<script>
+    //创建对象
+    function Person() {
+        console.log( "在1998年的那个风高夜黑的晚上，一声雷声！我们的白灵同学降生！");
+    }
+    Person.prototype = {
+        sayName: function () {
+            console.log("我是白灵！");
+        },
+        attack: function () {
+            console.log("我会拳击！");
+        },
+    };
+    //创建一个装饰者
+    var Decorator = function (person) {
+        this.person = person;
+    };
+    Decorator.prototype = {
+        sayName: function () {
+            this.person.sayName();
+        },
+        attack: function () {
+            this.person.attack();
+        },
+    };
+    //创建具体的装饰者对象
+    var Tz = function () {
+        //call 对象冒充
+        //Decorator()  this --- >  Tz实例对象 --- > person属性  -- > 接收 new Person()
+        // var Decorator = function (person) {
+        //   this.person = person;
+        // };
+        //Decorator.call(this, person);
+    };
+    var person = new Person();
+    Tz.prototype = new Decorator(person);
+    Tz.prototype.sayName = function () {
+        this.person.sayName();
+        console.log("我是大白！");
+    };
+
+    Tz.prototype.paoNiu = function () {
+        console.log("我会泡妞！");
+    };
+    var tz = new Tz();
+    tz.sayName(); // 我是大白！  我会拳击！  1    我是大白！ 错误 2  ？？？？
+    tz.paoNiu();
+    console.log(tz);
+</script>
+</body>
+</html>
